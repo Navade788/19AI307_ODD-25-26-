@@ -1,24 +1,41 @@
-# Ex.No:4(A) EXCEPTION HANDLING
+# Ex.No:4(B)  IMPLEMENT SOLID PRINCIPLES IN JAVA PROGRAM 
 
 ## QUESTION:
+In a gaming lounge, there is only one master console power switch that controls all gaming consoles. Whenever a player turns on any console, it internally triggers the master power. The master switch must ensure only one instance is ever created, regardless of how many times it's accessed, to prevent power fluctuations.
 
-Write a program that reads two integers and divides the first by the second. Handle the case when division by zero occurs.
+Every time a player accesses the master switch, it logs an access count. Since the switch is Singleton, the count should increment globally and reflect shared state.
+
+Input Format:
+n
+[Player1]
+[Player2]
+...
+First line: Integer n – number of players turning on consoles
+Next n lines: Each line contains the player's name.
+Output Format:
+For each player, print:
+[PlayerName] accessed Master Power Switch. Total accesses so far: [count]
 
 ## AIM:
-To write a Java program that reads two integers, performs division, and handles the ArithmeticException when division by zero occurs.
+To implement a Singleton design pattern in Java so that only one instance of the master power switch exists. Each player accessing the switch should increment a shared global access count.
 
 ## ALGORITHM :
+
 1. Start the program.
-2. Read two integers from the user: dividend and divisor.
-3. Use a try block to perform the division.
-4. If the divisor is zero, an ArithmeticException will occur.
-5. Catch the exception and display an appropriate message.
-6. If no exception occurs, print the division result.
+2. Create a Singleton class MasterSwitch with:
+  a private static instance variable
+  a private constructor
+  a public static getInstance() method
+  a counter variable to track accesses
+3. Read the number of players n.
+4. For each player, read their name.
+5. Using getInstance(), access the Singleton object.
+6. Increment the access count and print the player's access message.
 7. End the program.
+
 
 ## PROGRAM:
 ```
-/*
 Program to implement variables and Operators using Java
 Developed by: NAVADEEP S
 RegisterNumber:  212224230180
@@ -27,19 +44,38 @@ RegisterNumber:  212224230180
 ## SOURCE CODE:
 ```java
 import java.util.*;
-public class Main{
-    public static void main(String args[]){
-        Scanner input=new Scanner(System.in);
-        try{
-            int a=input.nextInt();
-            int b=input.nextInt();
-            System.out.print("Result: "+(a/b));
+
+class MasterPowerSwitch {
+    private static MasterPowerSwitch instance;
+    private  int accesscount = 0;
+    private MasterPowerSwitch(){}
+    public static MasterPowerSwitch getInstance(){
+        if(instance == null){
+            instance = new MasterPowerSwitch();
         }
-        catch(ArithmeticException e){
-            System.out.print("Error: Division by zero");
+        return instance;
+    }
+    
+    public int logAccess(){
+        return (++accesscount);
+    }
+}
+
+public class prog {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        sc.nextLine();
+
+        for (int i = 0; i < n; i++) {
+            String player = sc.nextLine();
+            MasterPowerSwitch power = MasterPowerSwitch.getInstance();
+            int count = power.logAccess();
+            System.out.println(player + " accessed Master Power Switch. Total accesses so far: " + count);
         }
     }
 }
+
 ```
 
 
@@ -49,8 +85,12 @@ public class Main{
 
 ## OUTPUT:
 
-<img width="1262" height="276" alt="image" src="https://github.com/user-attachments/assets/e26d359c-6cd8-44b0-b5af-fa483c9834a7" />
+<img width="1262" height="266" alt="image" src="https://github.com/user-attachments/assets/586da2db-36ad-4876-b8a0-0133492a1f05" />
+
 
 
 ## RESULT:
-The program successfully performs division of two integers and handles division-by-zero errors using exception handling.
+
+The program was executed successfully.
+A Singleton master power switch object was created, ensuring only one shared instance.
+Each player accessed the same master switch, and the global access count increased correctly for every access.
